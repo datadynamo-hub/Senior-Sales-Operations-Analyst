@@ -2,10 +2,3 @@ streamlit
 pandas
 numpy
 plotly
-langchain
-langchain-openai
-langchain-core
-langchain-community
-openai
-tiktoken
-python-dotenv
