@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import plotly.express as px
 from agent import Agent
 
 st.set_page_config(
@@ -84,6 +85,11 @@ st.caption(
 )
 st.info("All revenue and pipeline data displayed is simulated in real time to demonstrate system capabilities.")
 st.markdown("---")
+
+# ── Session state defaults ────────────────────────────────────────────────────
+
+if "pipeline_view" not in st.session_state:
+    st.session_state["pipeline_view"] = "All deals"
 
 # ── Tabs ──────────────────────────────────────────────────────────────────────
 
@@ -198,7 +204,148 @@ with tab1:
         )
 
 with tab2:
-    st.write("Tab 2 coming soon.")
+    STAGE_ORDER = ["Prospect", "Qualified", "Demo", "Proposal", "Negotiation"]
+    COLOR_MAP = {"New": "#2563EB", "Expansion": "#16A34A", "Renewal": "#D97706"}
+
+    open_t2 = pipeline_df[~pipeline_df["stage"].isin(["Closed Won", "Closed Lost"])].copy()
+
+    # Apply sidebar filter
+    view = st.session_state.get("pipeline_view", "All deals")
+    filtered = open_t2[open_t2["risk_flag"]] if view == "Risk flagged only" else open_t2
+
+    # ── Funnel: open deals by stage and motion ────────────────────────────────
+    st.subheader("Open pipeline by stage and motion")
+
+    funnel_data = (
+        filtered[filtered["stage"].isin(STAGE_ORDER)]
+        .groupby(["stage", "motion"])
+        .size()
+        .reset_index(name="deal_count")
+    )
+    funnel_data["stage"] = pd.Categorical(
+        funnel_data["stage"], categories=STAGE_ORDER, ordered=True
+    )
+    funnel_data = funnel_data.sort_values("stage")
+
+    fig_funnel = px.bar(
+        funnel_data,
+        x="stage",
+        y="deal_count",
+        color="motion",
+        barmode="group",
+        labels={
+            "stage": "Stage",
+            "deal_count": "Number of deals",
+            "motion": "Motion",
+        },
+        color_discrete_map=COLOR_MAP,
+    )
+    fig_funnel.update_layout(legend_title_text="Motion")
+    st.plotly_chart(fig_funnel, use_container_width=True)
+
+    # ── Quarterly forecast rollup ─────────────────────────────────────────────
+    st.markdown("---")
+    st.subheader("Quarterly forecast rollup")
+
+    STAGE_TO_CAT = {
+        "Negotiation": "Committed",
+        "Proposal": "Best Case",
+        "Demo": "Upside",
+        "Qualified": "Upside",
+        "Prospect": "Upside",
+    }
+    rollup = filtered.copy()
+    rollup["category"] = rollup["stage"].map(STAGE_TO_CAT)
+    rollup = rollup.dropna(subset=["category"])
+    rollup["quarter"] = rollup["close_date"].dt.to_period("Q").astype(str)
+
+    quarterly = (
+        rollup.groupby(["quarter", "category"])["ARR"]
+        .sum()
+        .reset_index()
+        .pivot(index="quarter", columns="category", values="ARR")
+        .fillna(0)
+        .reset_index()
+    )
+    quarterly.columns.name = None
+    for col in ["Committed", "Best Case", "Upside"]:
+        if col not in quarterly.columns:
+            quarterly[col] = 0.0
+    quarterly = quarterly[["quarter", "Committed", "Best Case", "Upside"]].sort_values("quarter")
+    quarterly["Total"] = quarterly["Committed"] + quarterly["Best Case"] + quarterly["Upside"]
+
+    st.dataframe(
+        quarterly,
+        hide_index=True,
+        width="stretch",
+        column_config={
+            "quarter": "Quarter",
+            "Committed": st.column_config.NumberColumn("Committed", format="$%.0f"),
+            "Best Case": st.column_config.NumberColumn("Best Case", format="$%.0f"),
+            "Upside": st.column_config.NumberColumn("Upside", format="$%.0f"),
+            "Total": st.column_config.NumberColumn("Total", format="$%.0f"),
+        },
+    )
+
+    # ── Deal velocity ─────────────────────────────────────────────────────────
+    st.markdown("---")
+    st.subheader("Average days in stage by motion")
+
+    velocity = (
+        open_t2.groupby(["stage", "motion"])["days_in_stage"]
+        .mean()
+        .round(1)
+        .reset_index()
+    )
+    velocity["stage"] = pd.Categorical(
+        velocity["stage"], categories=STAGE_ORDER, ordered=True
+    )
+    velocity = velocity[velocity["stage"].isin(STAGE_ORDER)].sort_values("stage")
+
+    fig_velocity = px.bar(
+        velocity,
+        x="stage",
+        y="days_in_stage",
+        color="motion",
+        barmode="group",
+        labels={
+            "stage": "Stage",
+            "days_in_stage": "Average days",
+            "motion": "Motion",
+        },
+        color_discrete_map=COLOR_MAP,
+    )
+    fig_velocity.update_layout(legend_title_text="Motion")
+    st.plotly_chart(fig_velocity, use_container_width=True)
+
+    # ── Rep deal list ─────────────────────────────────────────────────────────
+    st.markdown("---")
+    st.subheader("Deal list by rep")
+
+    deal_list = filtered[
+        ["rep_name", "motion", "stage", "ARR", "close_date", "risk_flag"]
+    ].copy()
+    deal_list = deal_list.sort_values(
+        ["risk_flag", "close_date"], ascending=[False, True]
+    )
+
+    st.dataframe(
+        deal_list,
+        hide_index=True,
+        width="stretch",
+        column_config={
+            "rep_name": "Rep",
+            "motion": "Motion",
+            "stage": "Stage",
+            "ARR": st.column_config.NumberColumn(
+                "Annual recurring revenue", format="$%.0f"
+            ),
+            "close_date": st.column_config.DateColumn(
+                "Close date", format="MMM D, YYYY"
+            ),
+            "risk_flag": st.column_config.CheckboxColumn("Risk flag"),
+        },
+    )
 
 with tab3:
     st.write("Tab 3 coming soon.")
@@ -217,7 +364,16 @@ with st.sidebar:
     if tab1.open:
         st.caption("No filters for this view.")
     elif tab2.open:
-        st.caption("Pipeline filters — coming soon.")
+        st.radio(
+            "Pipeline view",
+            ["All deals", "Risk flagged only"],
+            key="pipeline_view",
+            horizontal=True,
+        )
+        st.caption(
+            "Risk flagged: deals past stage time limit, low engagement score, "
+            "or discount above 20%."
+        )
     elif tab3.open:
         st.caption("Revenue filters — coming soon.")
     elif tab4.open:
