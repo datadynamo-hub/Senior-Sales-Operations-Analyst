@@ -1,0 +1,481 @@
+month,service_line,motion,MRR,contracted_hours,utilized_hours,sla_met
+2024-06,Video Remote Interpreting,New,45448,2952,2196,True
+2024-06,Video Remote Interpreting,Expansion,17695,2756,2321,True
+2024-06,Video Remote Interpreting,Renewal,83610,2843,2237,True
+2024-06,Video Remote Interpreting,Churn,-7799,2746,2283,True
+2024-06,On-site Interpreting,New,30537,1708,1300,True
+2024-06,On-site Interpreting,Expansion,12112,1723,1305,True
+2024-06,On-site Interpreting,Renewal,56921,1838,1377,True
+2024-06,On-site Interpreting,Churn,-5290,1776,1316,True
+2024-06,Forum,New,14628,912,600,True
+2024-06,Forum,Expansion,6327,871,508,True
+2024-06,Forum,Renewal,30855,889,535,True
+2024-06,Forum,Churn,-2471,894,568,True
+2024-06,Translation,New,10209,573,428,False
+2024-06,Translation,Expansion,4027,593,423,True
+2024-06,Translation,Renewal,20477,602,424,True
+2024-06,Translation,Churn,-1986,630,425,True
+2024-06,VRS for Zoom,New,20255,1168,931,True
+2024-06,VRS for Zoom,Expansion,7896,1139,899,True
+2024-06,VRS for Zoom,Renewal,39452,1197,863,True
+2024-06,VRS for Zoom,Churn,-3567,1181,811,True
+2024-07,Video Remote Interpreting,New,46172,2761,2090,True
+2024-07,Video Remote Interpreting,Expansion,18525,3024,2500,True
+2024-07,Video Remote Interpreting,Renewal,90740,2891,2413,False
+2024-07,Video Remote Interpreting,Churn,-7794,2785,2202,True
+2024-07,On-site Interpreting,New,32275,1789,1293,True
+2024-07,On-site Interpreting,Expansion,12060,1866,1212,True
+2024-07,On-site Interpreting,Renewal,58994,1688,1184,True
+2024-07,On-site Interpreting,Churn,-4934,1874,1368,True
+2024-07,Forum,New,15190,935,599,True
+2024-07,Forum,Expansion,6226,901,636,True
+2024-07,Forum,Renewal,29217,879,597,True
+2024-07,Forum,Churn,-2366,864,611,True
+2024-07,Translation,New,9734,603,461,True
+2024-07,Translation,Expansion,3816,588,457,True
+2024-07,Translation,Renewal,23015,584,394,True
+2024-07,Translation,Churn,-1994,614,437,True
+2024-07,VRS for Zoom,New,20428,1237,1017,True
+2024-07,VRS for Zoom,Expansion,7390,1245,1042,True
+2024-07,VRS for Zoom,Renewal,37579,1213,1003,True
+2024-07,VRS for Zoom,Churn,-3554,1196,902,True
+2024-07,Video Remote Interpreting,New,45795,2758,2459,False
+2024-07,Video Remote Interpreting,Expansion,19382,2766,2335,True
+2024-07,Video Remote Interpreting,Renewal,94340,2951,2465,True
+2024-07,Video Remote Interpreting,Churn,-8121,2873,2122,True
+2024-07,On-site Interpreting,New,30212,1758,1419,True
+2024-07,On-site Interpreting,Expansion,13031,1842,1462,True
+2024-07,On-site Interpreting,Renewal,62301,1768,1336,True
+2024-07,On-site Interpreting,Churn,-4692,1825,1344,False
+2024-07,Forum,New,16002,914,630,True
+2024-07,Forum,Expansion,6129,884,595,True
+2024-07,Forum,Renewal,27397,928,645,True
+2024-07,Forum,Churn,-2462,941,679,True
+2024-07,Translation,New,10316,594,401,True
+2024-07,Translation,Expansion,4182,633,483,True
+2024-07,Translation,Renewal,21532,603,439,True
+2024-07,Translation,Churn,-1934,614,429,True
+2024-07,VRS for Zoom,New,20856,1204,962,True
+2024-07,VRS for Zoom,Expansion,7864,1201,1017,True
+2024-07,VRS for Zoom,Renewal,41724,1176,829,True
+2024-07,VRS for Zoom,Churn,-3469,1220,958,True
+2024-08,Video Remote Interpreting,New,41997,2901,2530,True
+2024-08,Video Remote Interpreting,Expansion,18524,2802,2169,True
+2024-08,Video Remote Interpreting,Renewal,99420,3025,2409,False
+2024-08,Video Remote Interpreting,Churn,-7891,3018,2433,True
+2024-08,On-site Interpreting,New,31808,2018,1562,True
+2024-08,On-site Interpreting,Expansion,13026,1823,1313,True
+2024-08,On-site Interpreting,Renewal,62777,1858,1375,True
+2024-08,On-site Interpreting,Churn,-5008,1736,1330,True
+2024-08,Forum,New,14770,919,628,True
+2024-08,Forum,Expansion,6478,884,586,True
+2024-08,Forum,Renewal,29205,929,594,False
+2024-08,Forum,Churn,-2468,869,522,True
+2024-08,Translation,New,10357,612,439,True
+2024-08,Translation,Expansion,4338,593,399,True
+2024-08,Translation,Renewal,23255,637,447,True
+2024-08,Translation,Churn,-1835,599,417,True
+2024-08,VRS for Zoom,New,20932,1217,1012,True
+2024-08,VRS for Zoom,Expansion,8071,1246,907,True
+2024-08,VRS for Zoom,Renewal,41971,1223,1043,False
+2024-08,VRS for Zoom,Churn,-3731,1220,901,True
+2024-09,Video Remote Interpreting,New,45646,2824,2332,True
+2024-09,Video Remote Interpreting,Expansion,18605,2975,2547,True
+2024-09,Video Remote Interpreting,Renewal,91725,2935,2537,True
+2024-09,Video Remote Interpreting,Churn,-7740,2814,2292,True
+2024-09,On-site Interpreting,New,31588,1962,1438,True
+2024-09,On-site Interpreting,Expansion,12601,1861,1377,False
+2024-09,On-site Interpreting,Renewal,66564,1949,1466,True
+2024-09,On-site Interpreting,Churn,-4674,1852,1440,True
+2024-09,Forum,New,16034,953,666,True
+2024-09,Forum,Expansion,6433,918,636,False
+2024-09,Forum,Renewal,30134,827,505,True
+2024-09,Forum,Churn,-2496,896,583,True
+2024-09,Translation,New,10394,660,475,True
+2024-09,Translation,Expansion,4514,621,422,True
+2024-09,Translation,Renewal,23286,593,420,True
+2024-09,Translation,Churn,-2032,619,438,True
+2024-09,VRS for Zoom,New,21389,1261,945,True
+2024-09,VRS for Zoom,Expansion,8854,1223,896,True
+2024-09,VRS for Zoom,Renewal,43185,1181,943,True
+2024-09,VRS for Zoom,Churn,-3481,1261,925,True
+2024-10,Video Remote Interpreting,New,47789,2869,2423,False
+2024-10,Video Remote Interpreting,Expansion,20738,3026,2437,True
+2024-10,Video Remote Interpreting,Renewal,99717,2922,2382,True
+2024-10,Video Remote Interpreting,Churn,-7781,2848,2259,True
+2024-10,On-site Interpreting,New,32253,1891,1450,True
+2024-10,On-site Interpreting,Expansion,13290,1893,1307,True
+2024-10,On-site Interpreting,Renewal,63208,1779,1242,True
+2024-10,On-site Interpreting,Churn,-4885,1856,1348,True
+2024-10,Forum,New,16344,944,657,True
+2024-10,Forum,Expansion,5906,925,548,True
+2024-10,Forum,Renewal,30094,965,702,True
+2024-10,Forum,Churn,-2388,949,625,True
+2024-10,Translation,New,11174,613,461,True
+2024-10,Translation,Expansion,4135,642,480,True
+2024-10,Translation,Renewal,22928,607,423,True
+2024-10,Translation,Churn,-1875,632,423,True
+2024-10,VRS for Zoom,New,21594,1339,984,True
+2024-10,VRS for Zoom,Expansion,8651,1263,1003,True
+2024-10,VRS for Zoom,Renewal,42735,1302,1004,True
+2024-10,VRS for Zoom,Churn,-3324,1245,930,True
+2024-11,Video Remote Interpreting,New,51885,2927,2347,True
+2024-11,Video Remote Interpreting,Expansion,19440,2794,2161,True
+2024-11,Video Remote Interpreting,Renewal,103275,3181,2501,False
+2024-11,Video Remote Interpreting,Churn,-7835,2921,2416,True
+2024-11,On-site Interpreting,New,32844,1863,1274,True
+2024-11,On-site Interpreting,Expansion,13421,1870,1339,True
+2024-11,On-site Interpreting,Renewal,67479,1896,1353,False
+2024-11,On-site Interpreting,Churn,-4836,1975,1500,False
+2024-11,Forum,New,17162,975,686,True
+2024-11,Forum,Expansion,6675,912,645,True
+2024-11,Forum,Renewal,29549,980,699,True
+2024-11,Forum,Churn,-2398,910,610,True
+2024-11,Translation,New,10934,650,458,True
+2024-11,Translation,Expansion,4187,637,458,True
+2024-11,Translation,Renewal,23753,625,443,True
+2024-11,Translation,Churn,-1932,624,396,True
+2024-11,VRS for Zoom,New,21570,1231,1040,True
+2024-11,VRS for Zoom,Expansion,9169,1259,996,True
+2024-11,VRS for Zoom,Renewal,43606,1322,921,True
+2024-11,VRS for Zoom,Churn,-3321,1258,1028,True
+2024-12,Video Remote Interpreting,New,48960,3047,2593,True
+2024-12,Video Remote Interpreting,Expansion,20655,2980,2346,True
+2024-12,Video Remote Interpreting,Renewal,99890,2956,2568,True
+2024-12,Video Remote Interpreting,Churn,-7282,2851,2267,True
+2024-12,On-site Interpreting,New,31151,1844,1301,True
+2024-12,On-site Interpreting,Expansion,14215,1877,1361,True
+2024-12,On-site Interpreting,Renewal,61239,1894,1325,True
+2024-12,On-site Interpreting,Churn,-4516,1857,1385,True
+2024-12,Forum,New,16851,912,651,True
+2024-12,Forum,Expansion,6797,950,593,True
+2024-12,Forum,Renewal,31392,967,652,True
+2024-12,Forum,Churn,-2509,943,669,True
+2024-12,Translation,New,11916,610,416,True
+2024-12,Translation,Expansion,4232,608,425,True
+2024-12,Translation,Renewal,24210,621,430,True
+2024-12,Translation,Churn,-1862,676,494,True
+2024-12,VRS for Zoom,New,21667,1260,959,True
+2024-12,VRS for Zoom,Expansion,8352,1198,838,True
+2024-12,VRS for Zoom,Renewal,46542,1265,1064,True
+2024-12,VRS for Zoom,Churn,-3483,1232,999,True
+2025-01,Video Remote Interpreting,New,49237,3029,2522,True
+2025-01,Video Remote Interpreting,Expansion,19254,2873,2337,True
+2025-01,Video Remote Interpreting,Renewal,97604,2981,2482,True
+2025-01,Video Remote Interpreting,Churn,-8156,3093,2381,True
+2025-01,On-site Interpreting,New,32886,1975,1466,True
+2025-01,On-site Interpreting,Expansion,12468,1905,1290,True
+2025-01,On-site Interpreting,Renewal,71277,1869,1405,True
+2025-01,On-site Interpreting,Churn,-4679,1959,1446,True
+2025-01,Forum,New,16475,986,674,True
+2025-01,Forum,Expansion,6599,956,645,True
+2025-01,Forum,Renewal,32190,976,686,True
+2025-01,Forum,Churn,-2539,946,657,True
+2025-01,Translation,New,11210,626,491,True
+2025-01,Translation,Expansion,4440,661,418,True
+2025-01,Translation,Renewal,25424,639,466,True
+2025-01,Translation,Churn,-1918,676,509,True
+2025-01,VRS for Zoom,New,22006,1261,888,True
+2025-01,VRS for Zoom,Expansion,9263,1216,928,True
+2025-01,VRS for Zoom,Renewal,43070,1278,903,True
+2025-01,VRS for Zoom,Churn,-3461,1267,875,True
+2025-02,Video Remote Interpreting,New,53593,2751,2190,True
+2025-02,Video Remote Interpreting,Expansion,21087,2940,2428,True
+2025-02,Video Remote Interpreting,Renewal,109652,2983,2461,True
+2025-02,Video Remote Interpreting,Churn,-8003,2933,2309,True
+2025-02,On-site Interpreting,New,31921,1942,1512,True
+2025-02,On-site Interpreting,Expansion,12754,1922,1479,True
+2025-02,On-site Interpreting,Renewal,65172,1980,1486,True
+2025-02,On-site Interpreting,Churn,-5130,1956,1498,True
+2025-02,Forum,New,16879,941,655,True
+2025-02,Forum,Expansion,6666,934,721,True
+2025-02,Forum,Renewal,30849,991,669,True
+2025-02,Forum,Churn,-2441,927,643,True
+2025-02,Translation,New,11561,635,444,True
+2025-02,Translation,Expansion,4493,635,480,False
+2025-02,Translation,Renewal,25830,635,466,False
+2025-02,Translation,Churn,-2011,667,505,True
+2025-02,VRS for Zoom,New,23452,1302,944,True
+2025-02,VRS for Zoom,Expansion,9212,1307,1041,True
+2025-02,VRS for Zoom,Renewal,48076,1333,900,True
+2025-02,VRS for Zoom,Churn,-3320,1218,966,True
+2025-03,Video Remote Interpreting,New,49500,3054,2361,False
+2025-03,Video Remote Interpreting,Expansion,21923,2974,2463,True
+2025-03,Video Remote Interpreting,Renewal,111209,3078,2470,False
+2025-03,Video Remote Interpreting,Churn,-7171,3131,2495,True
+2025-03,On-site Interpreting,New,33821,1910,1466,True
+2025-03,On-site Interpreting,Expansion,14159,1943,1477,True
+2025-03,On-site Interpreting,Renewal,75154,1852,1463,True
+2025-03,On-site Interpreting,Churn,-4588,2074,1617,False
+2025-03,Forum,New,17269,965,648,True
+2025-03,Forum,Expansion,7286,977,628,True
+2025-03,Forum,Renewal,33386,991,703,False
+2025-03,Forum,Churn,-2286,946,581,True
+2025-03,Translation,New,11461,639,384,True
+2025-03,Translation,Expansion,4806,635,466,True
+2025-03,Translation,Renewal,26755,645,471,False
+2025-03,Translation,Churn,-2015,642,447,True
+2025-03,VRS for Zoom,New,23469,1291,999,True
+2025-03,VRS for Zoom,Expansion,9157,1385,1099,True
+2025-03,VRS for Zoom,Renewal,46657,1333,1014,True
+2025-03,VRS for Zoom,Churn,-3386,1334,1056,True
+2025-04,Video Remote Interpreting,New,49572,2915,2155,True
+2025-04,Video Remote Interpreting,Expansion,21913,3045,2191,True
+2025-04,Video Remote Interpreting,Renewal,104167,3237,2433,True
+2025-04,Video Remote Interpreting,Churn,-8075,3087,2570,True
+2025-04,On-site Interpreting,New,35411,2004,1418,True
+2025-04,On-site Interpreting,Expansion,13212,1977,1477,True
+2025-04,On-site Interpreting,Renewal,69836,1921,1339,True
+2025-04,On-site Interpreting,Churn,-4516,1977,1372,True
+2025-04,Forum,New,16649,962,630,True
+2025-04,Forum,Expansion,7082,972,680,True
+2025-04,Forum,Renewal,32563,1037,710,True
+2025-04,Forum,Churn,-2414,1005,603,True
+2025-04,Translation,New,11747,638,492,True
+2025-04,Translation,Expansion,4299,627,382,True
+2025-04,Translation,Renewal,25436,644,491,True
+2025-04,Translation,Churn,-1877,610,454,True
+2025-04,VRS for Zoom,New,23588,1344,999,True
+2025-04,VRS for Zoom,Expansion,8962,1334,963,False
+2025-04,VRS for Zoom,Renewal,49426,1295,1066,True
+2025-04,VRS for Zoom,Churn,-3293,1359,1060,True
+2025-05,Video Remote Interpreting,New,51393,3119,2575,True
+2025-05,Video Remote Interpreting,Expansion,20624,3015,2398,True
+2025-05,Video Remote Interpreting,Renewal,103530,3001,2523,True
+2025-05,Video Remote Interpreting,Churn,-7476,3032,2472,True
+2025-05,On-site Interpreting,New,33776,1917,1369,False
+2025-05,On-site Interpreting,Expansion,14251,2015,1363,True
+2025-05,On-site Interpreting,Renewal,70177,1993,1473,True
+2025-05,On-site Interpreting,Churn,-4462,1974,1541,False
+2025-05,Forum,New,17944,1021,688,True
+2025-05,Forum,Expansion,6880,982,604,True
+2025-05,Forum,Renewal,34285,957,633,True
+2025-05,Forum,Churn,-2217,981,638,False
+2025-05,Translation,New,12013,663,483,True
+2025-05,Translation,Expansion,4518,656,502,True
+2025-05,Translation,Renewal,24483,651,504,True
+2025-05,Translation,Churn,-1894,653,460,True
+2025-05,VRS for Zoom,New,23361,1313,1041,False
+2025-05,VRS for Zoom,Expansion,9640,1430,1028,True
+2025-05,VRS for Zoom,Renewal,45764,1337,1058,True
+2025-05,VRS for Zoom,Churn,-3444,1322,1104,True
+2025-06,Video Remote Interpreting,New,57196,3125,2665,True
+2025-06,Video Remote Interpreting,Expansion,20795,3104,2512,True
+2025-06,Video Remote Interpreting,Renewal,112215,2927,2484,True
+2025-06,Video Remote Interpreting,Churn,-7419,2954,2452,True
+2025-06,On-site Interpreting,New,35189,2025,1377,True
+2025-06,On-site Interpreting,Expansion,14271,2056,1506,True
+2025-06,On-site Interpreting,Renewal,70247,2063,1570,True
+2025-06,On-site Interpreting,Churn,-4630,1893,1430,False
+2025-06,Forum,New,18464,997,773,True
+2025-06,Forum,Expansion,7140,1047,761,True
+2025-06,Forum,Renewal,33759,993,686,True
+2025-06,Forum,Churn,-2329,945,647,True
+2025-06,Translation,New,11841,630,478,True
+2025-06,Translation,Expansion,4641,656,432,True
+2025-06,Translation,Renewal,25724,686,476,True
+2025-06,Translation,Churn,-1829,667,476,False
+2025-06,VRS for Zoom,New,23388,1262,927,True
+2025-06,VRS for Zoom,Expansion,9628,1275,1028,True
+2025-06,VRS for Zoom,Renewal,52340,1255,1001,False
+2025-06,VRS for Zoom,Churn,-3207,1330,926,True
+2025-07,Video Remote Interpreting,New,58594,3071,2519,True
+2025-07,Video Remote Interpreting,Expansion,21637,3059,2199,True
+2025-07,Video Remote Interpreting,Renewal,108407,3019,2460,True
+2025-07,Video Remote Interpreting,Churn,-7282,3170,2397,True
+2025-07,On-site Interpreting,New,34270,1961,1601,True
+2025-07,On-site Interpreting,Expansion,14576,1945,1398,True
+2025-07,On-site Interpreting,Renewal,72708,1996,1474,True
+2025-07,On-site Interpreting,Churn,-4381,1970,1529,True
+2025-07,Forum,New,18012,976,668,True
+2025-07,Forum,Expansion,7689,1016,637,True
+2025-07,Forum,Renewal,32830,983,680,True
+2025-07,Forum,Churn,-2408,977,640,True
+2025-07,Translation,New,11826,689,513,True
+2025-07,Translation,Expansion,5279,646,466,True
+2025-07,Translation,Renewal,25792,654,443,True
+2025-07,Translation,Churn,-1849,642,483,True
+2025-07,VRS for Zoom,New,26919,1316,1043,True
+2025-07,VRS for Zoom,Expansion,10340,1379,1105,True
+2025-07,VRS for Zoom,Renewal,48807,1289,1093,True
+2025-07,VRS for Zoom,Churn,-3267,1236,927,True
+2025-08,Video Remote Interpreting,New,57799,3240,2418,True
+2025-08,Video Remote Interpreting,Expansion,22945,2979,2412,True
+2025-08,Video Remote Interpreting,Renewal,108923,2961,2359,True
+2025-08,Video Remote Interpreting,Churn,-7356,3082,2441,True
+2025-08,On-site Interpreting,New,37400,1997,1445,True
+2025-08,On-site Interpreting,Expansion,13570,2044,1512,True
+2025-08,On-site Interpreting,Renewal,76324,1897,1254,True
+2025-08,On-site Interpreting,Churn,-4623,2026,1461,False
+2025-08,Forum,New,19060,1022,684,True
+2025-08,Forum,Expansion,7576,1044,736,True
+2025-08,Forum,Renewal,35224,1034,767,False
+2025-08,Forum,Churn,-2291,1030,702,True
+2025-08,Translation,New,12453,683,494,True
+2025-08,Translation,Expansion,4849,701,479,True
+2025-08,Translation,Renewal,26961,689,454,True
+2025-08,Translation,Churn,-1699,672,453,True
+2025-08,VRS for Zoom,New,25148,1318,1053,True
+2025-08,VRS for Zoom,Expansion,10063,1363,1039,True
+2025-08,VRS for Zoom,Renewal,51045,1359,997,True
+2025-08,VRS for Zoom,Churn,-3097,1400,1163,True
+2025-09,Video Remote Interpreting,New,56150,3138,2626,True
+2025-09,Video Remote Interpreting,Expansion,22530,3241,2552,True
+2025-09,Video Remote Interpreting,Renewal,106268,3057,2252,True
+2025-09,Video Remote Interpreting,Churn,-7892,3293,2453,True
+2025-09,On-site Interpreting,New,39316,2002,1489,True
+2025-09,On-site Interpreting,Expansion,15038,1965,1469,True
+2025-09,On-site Interpreting,Renewal,76015,2092,1482,True
+2025-09,On-site Interpreting,Churn,-4203,2014,1443,True
+2025-09,Forum,New,18937,1001,637,True
+2025-09,Forum,Expansion,7758,1033,697,True
+2025-09,Forum,Renewal,33107,1016,696,False
+2025-09,Forum,Churn,-2340,991,694,True
+2025-09,Translation,New,10953,700,418,True
+2025-09,Translation,Expansion,5163,670,443,True
+2025-09,Translation,Renewal,28400,637,487,True
+2025-09,Translation,Churn,-1752,664,451,True
+2025-09,VRS for Zoom,New,25526,1283,992,False
+2025-09,VRS for Zoom,Expansion,10433,1298,1108,True
+2025-09,VRS for Zoom,Renewal,47294,1326,1005,True
+2025-09,VRS for Zoom,Churn,-3232,1303,915,True
+2025-10,Video Remote Interpreting,New,52402,3109,2405,True
+2025-10,Video Remote Interpreting,Expansion,24398,3186,2611,True
+2025-10,Video Remote Interpreting,Renewal,109995,3201,2461,True
+2025-10,Video Remote Interpreting,Churn,-6967,3153,2480,True
+2025-10,On-site Interpreting,New,36685,2028,1481,True
+2025-10,On-site Interpreting,Expansion,15352,2059,1516,True
+2025-10,On-site Interpreting,Renewal,77699,2030,1477,True
+2025-10,On-site Interpreting,Churn,-4885,1962,1512,True
+2025-10,Forum,New,18988,1070,748,True
+2025-10,Forum,Expansion,7361,1023,685,True
+2025-10,Forum,Renewal,34732,1028,667,True
+2025-10,Forum,Churn,-2163,1034,725,True
+2025-10,Translation,New,13034,683,502,True
+2025-10,Translation,Expansion,5001,670,541,True
+2025-10,Translation,Renewal,26874,690,503,True
+2025-10,Translation,Churn,-1912,679,458,True
+2025-10,VRS for Zoom,New,25728,1311,1128,True
+2025-10,VRS for Zoom,Expansion,10035,1428,1137,True
+2025-10,VRS for Zoom,Renewal,48874,1386,1121,True
+2025-10,VRS for Zoom,Churn,-3101,1368,1076,True
+2025-11,Video Remote Interpreting,New,53785,3257,2299,True
+2025-11,Video Remote Interpreting,Expansion,22422,3328,2629,True
+2025-11,Video Remote Interpreting,Renewal,112485,3214,2698,True
+2025-11,Video Remote Interpreting,Churn,-7570,3107,2553,True
+2025-11,On-site Interpreting,New,39105,2177,1544,True
+2025-11,On-site Interpreting,Expansion,14633,2099,1595,True
+2025-11,On-site Interpreting,Renewal,72777,2106,1455,True
+2025-11,On-site Interpreting,Churn,-5070,2081,1588,False
+2025-11,Forum,New,17670,1010,642,False
+2025-11,Forum,Expansion,8144,1038,721,True
+2025-11,Forum,Renewal,35314,1059,718,True
+2025-11,Forum,Churn,-2257,1019,635,True
+2025-11,Translation,New,12567,687,459,True
+2025-11,Translation,Expansion,5090,642,438,True
+2025-11,Translation,Renewal,28372,662,480,False
+2025-11,Translation,Churn,-1876,684,479,True
+2025-11,VRS for Zoom,New,25875,1380,1124,True
+2025-11,VRS for Zoom,Expansion,10492,1376,1130,True
+2025-11,VRS for Zoom,Renewal,49165,1298,1105,True
+2025-11,VRS for Zoom,Churn,-2966,1343,1102,True
+2025-12,Video Remote Interpreting,New,56640,3361,2581,True
+2025-12,Video Remote Interpreting,Expansion,23325,3263,2707,True
+2025-12,Video Remote Interpreting,Renewal,116568,3272,2616,True
+2025-12,Video Remote Interpreting,Churn,-7271,3246,2729,True
+2025-12,On-site Interpreting,New,38618,2023,1502,True
+2025-12,On-site Interpreting,Expansion,15539,2210,1589,True
+2025-12,On-site Interpreting,Renewal,80395,2079,1732,True
+2025-12,On-site Interpreting,Churn,-4583,2023,1468,True
+2025-12,Forum,New,19927,1046,763,True
+2025-12,Forum,Expansion,7607,1120,779,True
+2025-12,Forum,Renewal,34980,1007,722,True
+2025-12,Forum,Churn,-2274,1034,733,True
+2025-12,Translation,New,12297,695,517,True
+2025-12,Translation,Expansion,4973,705,486,True
+2025-12,Translation,Renewal,27202,718,535,True
+2025-12,Translation,Churn,-1900,749,488,False
+2025-12,VRS for Zoom,New,25066,1347,1006,True
+2025-12,VRS for Zoom,Expansion,9779,1396,1105,True
+2025-12,VRS for Zoom,Renewal,52443,1407,1090,True
+2025-12,VRS for Zoom,Churn,-3197,1305,978,True
+2026-01,Video Remote Interpreting,New,58540,3236,2560,True
+2026-01,Video Remote Interpreting,Expansion,23913,3318,2564,True
+2026-01,Video Remote Interpreting,Renewal,117172,3264,2401,True
+2026-01,Video Remote Interpreting,Churn,-7204,3227,2508,True
+2026-01,On-site Interpreting,New,38724,2093,1599,False
+2026-01,On-site Interpreting,Expansion,15416,2059,1559,True
+2026-01,On-site Interpreting,Renewal,76645,2137,1665,True
+2026-01,On-site Interpreting,Churn,-4820,2033,1505,True
+2026-01,Forum,New,19423,1023,634,True
+2026-01,Forum,Expansion,7560,1046,678,True
+2026-01,Forum,Renewal,36741,1048,736,True
+2026-01,Forum,Churn,-2274,1059,674,True
+2026-01,Translation,New,13823,676,458,True
+2026-01,Translation,Expansion,5181,677,479,False
+2026-01,Translation,Renewal,27677,666,504,True
+2026-01,Translation,Churn,-1755,662,456,True
+2026-01,VRS for Zoom,New,27212,1348,1060,True
+2026-01,VRS for Zoom,Expansion,9409,1435,1065,True
+2026-01,VRS for Zoom,Renewal,52513,1437,1166,False
+2026-01,VRS for Zoom,Churn,-3051,1397,1092,True
+2026-02,Video Remote Interpreting,New,61043,3330,2668,True
+2026-02,Video Remote Interpreting,Expansion,23238,3311,2537,True
+2026-02,Video Remote Interpreting,Renewal,122650,3282,2256,True
+2026-02,Video Remote Interpreting,Churn,-7700,3216,2349,True
+2026-02,On-site Interpreting,New,39471,2172,1631,True
+2026-02,On-site Interpreting,Expansion,16009,2146,1783,True
+2026-02,On-site Interpreting,Renewal,73912,2130,1673,True
+2026-02,On-site Interpreting,Churn,-4398,2175,1690,True
+2026-02,Forum,New,19133,1035,691,True
+2026-02,Forum,Expansion,7609,964,638,True
+2026-02,Forum,Renewal,36093,1112,756,False
+2026-02,Forum,Churn,-2260,1077,744,True
+2026-02,Translation,New,13179,711,522,True
+2026-02,Translation,Expansion,5345,747,529,True
+2026-02,Translation,Renewal,30385,724,521,True
+2026-02,Translation,Churn,-1826,654,509,True
+2026-02,VRS for Zoom,New,27351,1363,992,True
+2026-02,VRS for Zoom,Expansion,10505,1380,1094,False
+2026-02,VRS for Zoom,Renewal,54355,1445,1190,True
+2026-02,VRS for Zoom,Churn,-3108,1315,1028,True
+2026-03,Video Remote Interpreting,New,57528,3275,2562,True
+2026-03,Video Remote Interpreting,Expansion,24657,3357,2802,True
+2026-03,Video Remote Interpreting,Renewal,120645,3175,2294,True
+2026-03,Video Remote Interpreting,Churn,-7212,3412,2978,True
+2026-03,On-site Interpreting,New,38307,2094,1589,True
+2026-03,On-site Interpreting,Expansion,16904,2187,1584,True
+2026-03,On-site Interpreting,Renewal,82318,2046,1494,True
+2026-03,On-site Interpreting,Churn,-4733,2094,1345,True
+2026-03,Forum,New,19392,1059,716,True
+2026-03,Forum,Expansion,8232,1009,665,True
+2026-03,Forum,Renewal,36325,1007,711,True
+2026-03,Forum,Churn,-2220,996,705,True
+2026-03,Translation,New,13464,686,462,True
+2026-03,Translation,Expansion,5280,691,513,True
+2026-03,Translation,Renewal,30407,711,492,True
+2026-03,Translation,Churn,-1821,687,449,True
+2026-03,VRS for Zoom,New,26222,1310,1006,True
+2026-03,VRS for Zoom,Expansion,11310,1339,980,True
+2026-03,VRS for Zoom,Renewal,56087,1379,1054,True
+2026-03,VRS for Zoom,Churn,-2825,1332,1037,True
+2026-04,Video Remote Interpreting,New,59470,3325,2844,True
+2026-04,Video Remote Interpreting,Expansion,23651,3313,2924,True
+2026-04,Video Remote Interpreting,Renewal,126025,3213,2615,True
+2026-04,Video Remote Interpreting,Churn,-6808,3217,2641,True
+2026-04,On-site Interpreting,New,40140,2135,1628,True
+2026-04,On-site Interpreting,Expansion,16617,2183,1842,True
+2026-04,On-site Interpreting,Renewal,79221,2180,1684,True
+2026-04,On-site Interpreting,Churn,-4353,2165,1530,True
+2026-04,Forum,New,20247,1097,719,True
+2026-04,Forum,Expansion,7451,1025,643,True
+2026-04,Forum,Renewal,35869,1043,676,True
+2026-04,Forum,Churn,-2329,1086,739,True
+2026-04,Translation,New,13216,717,532,True
+2026-04,Translation,Expansion,5387,667,485,True
+2026-04,Translation,Renewal,29258,749,512,True
+2026-04,Translation,Churn,-1767,708,506,True
+2026-04,VRS for Zoom,New,27812,1479,1168,False
+2026-04,VRS for Zoom,Expansion,10457,1453,1103,True
+2026-04,VRS for Zoom,Renewal,58557,1415,993,True
+2026-04,VRS for Zoom,Churn,-3250,1444,1155,True
