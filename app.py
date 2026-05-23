@@ -98,8 +98,104 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs(
     on_change="rerun",
 )
 
+# ── Tab 1: Executive Summary ──────────────────────────────────────────────────
+
 with tab1:
-    st.write("Tab 1 coming soon.")
+    open_deals = pipeline_df[~pipeline_df["stage"].isin(["Closed Won", "Closed Lost"])]
+
+    # Pipeline coverage ratio
+    total_pipeline = open_deals["ARR"].sum()
+    total_quota = reps_df["quota"].sum()
+    coverage = total_pipeline / total_quota
+
+    # Net dollar retention (trailing 3 months)
+    latest_months = sorted(revenue_df["month"].unique())[-3:]
+    qtd = revenue_df[revenue_df["month"].isin(latest_months)]
+    renewal_mrr = qtd[qtd["motion"] == "Renewal"]["MRR"].sum()
+    expansion_mrr = qtd[qtd["motion"] == "Expansion"]["MRR"].sum()
+    churn_mrr = qtd[qtd["motion"] == "Churn"]["MRR"].sum()
+    ndr = (renewal_mrr + expansion_mrr + churn_mrr) / renewal_mrr if renewal_mrr else 0
+    expansion_rate = expansion_mrr / renewal_mrr if renewal_mrr else 0
+    contraction_rate = churn_mrr / renewal_mrr if renewal_mrr else 0
+
+    # Quota attainment
+    reps_above_80 = int((reps_df["attainment_pct"] >= 0.80).sum())
+    total_reps = len(reps_df)
+
+    # Service level agreement compliance
+    sla_rate = revenue_df["sla_met"].mean()
+
+    # Interpreting hours utilization
+    util_rate = (
+        revenue_df["utilized_hours"].sum() / revenue_df["contracted_hours"].sum()
+    )
+
+    # Deal velocity (average days in stage by motion)
+    velocity_new = open_deals[open_deals["motion"] == "New"]["days_in_stage"].mean()
+    velocity_renewal = open_deals[open_deals["motion"] == "Renewal"]["days_in_stage"].mean()
+
+    # KPI row
+    c1, c2, c3, c4, c5 = st.columns(5)
+
+    with c1:
+        st.metric(
+            label="Pipeline Coverage Ratio",
+            value=f"{coverage:.1f}x",
+            delta=f"{coverage - 3.0:+.1f}x vs 3.0x target",
+            border=True,
+        )
+    with c2:
+        st.metric(
+            label="Net Dollar Retention",
+            value=f"{ndr:.0%}",
+            delta=f"Expansion {expansion_rate:+.0%}, Contraction {contraction_rate:.0%}",
+            delta_color="off",
+            border=True,
+        )
+    with c3:
+        st.metric(
+            label="Quota Attainment",
+            value=f"{reps_above_80} of {total_reps} reps",
+            delta=f"{reps_above_80 / total_reps:.0%} at or above 80%",
+            delta_color="off",
+            border=True,
+        )
+    with c4:
+        st.metric(
+            label="Service Level Agreement Compliance",
+            value=f"{sla_rate:.1%}",
+            delta=f"{sla_rate - 0.95:+.1%} vs 95% target",
+            border=True,
+        )
+    with c5:
+        st.metric(
+            label="Interpreting Hours Utilization",
+            value=f"{util_rate:.0%}",
+            delta="of contracted hours used",
+            delta_color="off",
+            border=True,
+        )
+
+    # Deal velocity
+    st.markdown("---")
+    st.subheader("Average Deal Velocity")
+    v1, v2 = st.columns(2)
+    with v1:
+        st.metric(
+            label="New Business",
+            value=f"{velocity_new:.0f} days",
+            delta="average days in current stage",
+            delta_color="off",
+            border=True,
+        )
+    with v2:
+        st.metric(
+            label="Renewal",
+            value=f"{velocity_renewal:.0f} days",
+            delta="average days in current stage",
+            delta_color="off",
+            border=True,
+        )
 
 with tab2:
     st.write("Tab 2 coming soon.")
