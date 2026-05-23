@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from agent import Agent
 
 st.set_page_config(
     page_title="Sorenson RevOps Center",
@@ -17,6 +18,60 @@ def load_data():
     return pipeline, revenue, reps
 
 pipeline_df, revenue_df, reps_df = load_data()
+
+# ── Data summary for chatbot system prompt ────────────────────────────────────
+
+@st.cache_data
+def build_system_prompt(pipeline: pd.DataFrame, revenue: pd.DataFrame, reps: pd.DataFrame) -> str:
+    total_arr = pipeline["ARR"].sum()
+    risk_count = pipeline["risk_flag"].sum()
+    motion_arr = pipeline.groupby("motion")["ARR"].sum().to_dict()
+
+    latest_month = revenue["month"].max()
+    rev_latest = revenue[revenue["month"] == latest_month]
+    ndr_components = rev_latest.groupby("motion")["MRR"].sum().to_dict()
+
+    util = revenue.groupby("service_line").apply(
+        lambda x: (x["utilized_hours"].sum() / x["contracted_hours"].sum())
+    ).round(3).to_dict()
+
+    avg_attainment = reps["attainment_pct"].mean()
+    reps_above_80 = (reps["attainment_pct"] >= 0.80).sum()
+    most_risk = pipeline[pipeline["risk_flag"]].groupby("rep_name").size().idxmax()
+
+    return f"""You are an AI assistant embedded in the Sorenson RevOps Center dashboard.
+Answer questions only about the pipeline, forecast, revenue, and rep performance data shown below.
+Do not answer general knowledge questions. Be concise and specific.
+
+PIPELINE SUMMARY (open deals):
+- Total open pipeline annual recurring revenue: ${total_arr:,.0f}
+- Deals with risk flags: {risk_count} of {len(pipeline)}
+- Pipeline by motion: New ${motion_arr.get('New', 0):,.0f} | Expansion ${motion_arr.get('Expansion', 0):,.0f} | Renewal ${motion_arr.get('Renewal', 0):,.0f}
+- Rep with most risk-flagged deals: {most_risk}
+
+REVENUE SUMMARY (latest month: {latest_month}):
+- New motion monthly recurring revenue: ${ndr_components.get('New', 0):,.0f}
+- Expansion monthly recurring revenue: ${ndr_components.get('Expansion', 0):,.0f}
+- Renewal monthly recurring revenue: ${ndr_components.get('Renewal', 0):,.0f}
+- Churn monthly recurring revenue: ${ndr_components.get('Churn', 0):,.0f}
+
+HOURS UTILIZATION BY SERVICE LINE:
+{chr(10).join(f"- {sl}: {rate:.0%}" for sl, rate in util.items())}
+
+REP PERFORMANCE:
+- Average quota attainment: {avg_attainment:.0%}
+- Reps at or above 80% attainment: {reps_above_80} of {len(reps)}
+"""
+
+system_prompt = build_system_prompt(pipeline_df, revenue_df, reps_df)
+
+# ── Agent ─────────────────────────────────────────────────────────────────────
+
+@st.cache_resource
+def get_agent(prompt: str) -> Agent:
+    return Agent(system_prompt=prompt)
+
+agent = get_agent(system_prompt)
 
 # ── Header ────────────────────────────────────────────────────────────────────
 
@@ -87,6 +142,6 @@ with st.sidebar:
     if prompt := st.chat_input("Ask about the data..."):
         st.session_state.chat_messages.append({"role": "user", "content": prompt})
         messages.chat_message("user").write(prompt)
-        response = "Chatbot not yet connected."
+        response = agent.answer(st.session_state.chat_messages)
         st.session_state.chat_messages.append({"role": "assistant", "content": response})
         messages.chat_message("assistant").write(response)
