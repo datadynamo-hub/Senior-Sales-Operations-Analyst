@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 from agent import Agent
 
 st.set_page_config(
@@ -86,20 +87,41 @@ st.caption(
 st.info("All revenue and pipeline data displayed is simulated in real time to demonstrate system capabilities.")
 st.markdown("---")
 
+# ── Shared constants ──────────────────────────────────────────────────────────
+
+_MOTION_COLORS = {
+    "New": "#2563EB",
+    "Expansion": "#16A34A",
+    "Renewal": "#D97706",
+    "Churn": "#DC2626",
+}
+
+_ALL_SERVICE_LINES = sorted(revenue_df["service_line"].unique().tolist())
+_ALL_MOTIONS_REV = sorted(m for m in revenue_df["motion"].unique() if m != "Churn")
+_ALL_MONTHS = sorted(revenue_df["month"].unique().tolist())
+_ALL_TERRITORIES = sorted(reps_df["territory"].unique().tolist())
+
 # ── Session state defaults ────────────────────────────────────────────────────
 
 if "pipeline_view" not in st.session_state:
     st.session_state["pipeline_view"] = "All deals"
+if "rev_service_lines" not in st.session_state:
+    st.session_state["rev_service_lines"] = _ALL_SERVICE_LINES
+if "rev_motions" not in st.session_state:
+    st.session_state["rev_motions"] = _ALL_MOTIONS_REV
+if "rev_month_range" not in st.session_state:
+    st.session_state["rev_month_range"] = (_ALL_MONTHS[0], _ALL_MONTHS[-1])
+if "rep_territories" not in st.session_state:
+    st.session_state["rep_territories"] = _ALL_TERRITORIES
 
 # ── Tabs ──────────────────────────────────────────────────────────────────────
 
-tab1, tab2, tab3, tab4, tab5 = st.tabs(
+tab1, tab2, tab3, tab4 = st.tabs(
     [
         "Executive Summary",
         "Pipeline and Forecast",
         "Multi-Motion Revenue",
         "Rep Productivity and Compensation",
-        "Fill This Out",
     ],
     on_change="rerun",
 )
@@ -109,12 +131,10 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs(
 with tab1:
     open_deals = pipeline_df[~pipeline_df["stage"].isin(["Closed Won", "Closed Lost"])]
 
-    # Pipeline coverage ratio
     total_pipeline = open_deals["ARR"].sum()
     total_quota = reps_df["quota"].sum()
     coverage = total_pipeline / total_quota
 
-    # Net dollar retention (trailing 3 months)
     latest_months = sorted(revenue_df["month"].unique())[-3:]
     qtd = revenue_df[revenue_df["month"].isin(latest_months)]
     renewal_mrr = qtd[qtd["motion"] == "Renewal"]["MRR"].sum()
@@ -124,23 +144,18 @@ with tab1:
     expansion_rate = expansion_mrr / renewal_mrr if renewal_mrr else 0
     contraction_rate = churn_mrr / renewal_mrr if renewal_mrr else 0
 
-    # Quota attainment
     reps_above_80 = int((reps_df["attainment_pct"] >= 0.80).sum())
     total_reps = len(reps_df)
 
-    # Service level agreement compliance
     sla_rate = revenue_df["sla_met"].mean()
 
-    # Interpreting hours utilization
     util_rate = (
         revenue_df["utilized_hours"].sum() / revenue_df["contracted_hours"].sum()
     )
 
-    # Deal velocity (average days in stage by motion)
     velocity_new = open_deals[open_deals["motion"] == "New"]["days_in_stage"].mean()
     velocity_renewal = open_deals[open_deals["motion"] == "Renewal"]["days_in_stage"].mean()
 
-    # KPI row
     c1, c2, c3, c4, c5 = st.columns(5)
 
     with c1:
@@ -182,7 +197,6 @@ with tab1:
             border=True,
         )
 
-    # Deal velocity
     st.markdown("---")
     st.subheader("Average Deal Velocity")
     v1, v2 = st.columns(2)
@@ -203,27 +217,26 @@ with tab1:
             border=True,
         )
 
+# ── Tab 2: Pipeline and Forecast ──────────────────────────────────────────────
+
 with tab2:
-    STAGE_ORDER = ["Prospect", "Qualified", "Demo", "Proposal", "Negotiation"]
-    COLOR_MAP = {"New": "#2563EB", "Expansion": "#16A34A", "Renewal": "#D97706"}
+    _STAGE_ORDER = ["Prospect", "Qualified", "Demo", "Proposal", "Negotiation"]
 
     open_t2 = pipeline_df[~pipeline_df["stage"].isin(["Closed Won", "Closed Lost"])].copy()
 
-    # Apply sidebar filter
     view = st.session_state.get("pipeline_view", "All deals")
     filtered = open_t2[open_t2["risk_flag"]] if view == "Risk flagged only" else open_t2
 
-    # ── Funnel: open deals by stage and motion ────────────────────────────────
     st.subheader("Open pipeline by stage and motion")
 
     funnel_data = (
-        filtered[filtered["stage"].isin(STAGE_ORDER)]
+        filtered[filtered["stage"].isin(_STAGE_ORDER)]
         .groupby(["stage", "motion"])
         .size()
         .reset_index(name="deal_count")
     )
     funnel_data["stage"] = pd.Categorical(
-        funnel_data["stage"], categories=STAGE_ORDER, ordered=True
+        funnel_data["stage"], categories=_STAGE_ORDER, ordered=True
     )
     funnel_data = funnel_data.sort_values("stage")
 
@@ -233,21 +246,16 @@ with tab2:
         y="deal_count",
         color="motion",
         barmode="group",
-        labels={
-            "stage": "Stage",
-            "deal_count": "Number of deals",
-            "motion": "Motion",
-        },
-        color_discrete_map=COLOR_MAP,
+        labels={"stage": "Stage", "deal_count": "Number of deals", "motion": "Motion"},
+        color_discrete_map=_MOTION_COLORS,
     )
     fig_funnel.update_layout(legend_title_text="Motion")
     st.plotly_chart(fig_funnel, use_container_width=True)
 
-    # ── Quarterly forecast rollup ─────────────────────────────────────────────
     st.markdown("---")
     st.subheader("Quarterly forecast rollup")
 
-    STAGE_TO_CAT = {
+    _STAGE_TO_CAT = {
         "Negotiation": "Committed",
         "Proposal": "Best Case",
         "Demo": "Upside",
@@ -255,7 +263,7 @@ with tab2:
         "Prospect": "Upside",
     }
     rollup = filtered.copy()
-    rollup["category"] = rollup["stage"].map(STAGE_TO_CAT)
+    rollup["category"] = rollup["stage"].map(_STAGE_TO_CAT)
     rollup = rollup.dropna(subset=["category"])
     rollup["quarter"] = rollup["close_date"].dt.to_period("Q").astype(str)
 
@@ -277,7 +285,7 @@ with tab2:
     st.dataframe(
         quarterly,
         hide_index=True,
-        width="stretch",
+        use_container_width=True,
         column_config={
             "quarter": "Quarter",
             "Committed": st.column_config.NumberColumn("Committed", format="$%.0f"),
@@ -287,7 +295,6 @@ with tab2:
         },
     )
 
-    # ── Deal velocity ─────────────────────────────────────────────────────────
     st.markdown("---")
     st.subheader("Average days in stage by motion")
 
@@ -298,9 +305,9 @@ with tab2:
         .reset_index()
     )
     velocity["stage"] = pd.Categorical(
-        velocity["stage"], categories=STAGE_ORDER, ordered=True
+        velocity["stage"], categories=_STAGE_ORDER, ordered=True
     )
-    velocity = velocity[velocity["stage"].isin(STAGE_ORDER)].sort_values("stage")
+    velocity = velocity[velocity["stage"].isin(_STAGE_ORDER)].sort_values("stage")
 
     fig_velocity = px.bar(
         velocity,
@@ -308,17 +315,12 @@ with tab2:
         y="days_in_stage",
         color="motion",
         barmode="group",
-        labels={
-            "stage": "Stage",
-            "days_in_stage": "Average days",
-            "motion": "Motion",
-        },
-        color_discrete_map=COLOR_MAP,
+        labels={"stage": "Stage", "days_in_stage": "Average days", "motion": "Motion"},
+        color_discrete_map=_MOTION_COLORS,
     )
     fig_velocity.update_layout(legend_title_text="Motion")
     st.plotly_chart(fig_velocity, use_container_width=True)
 
-    # ── Rep deal list ─────────────────────────────────────────────────────────
     st.markdown("---")
     st.subheader("Deal list by rep")
 
@@ -332,29 +334,308 @@ with tab2:
     st.dataframe(
         deal_list,
         hide_index=True,
-        width="stretch",
+        use_container_width=True,
         column_config={
             "rep_name": "Rep",
             "motion": "Motion",
             "stage": "Stage",
-            "ARR": st.column_config.NumberColumn(
-                "Annual recurring revenue", format="$%.0f"
-            ),
-            "close_date": st.column_config.DateColumn(
-                "Close date", format="MMM D, YYYY"
-            ),
+            "ARR": st.column_config.NumberColumn("Annual recurring revenue", format="$%.0f"),
+            "close_date": st.column_config.DateColumn("Close date", format="MMM D, YYYY"),
             "risk_flag": st.column_config.CheckboxColumn("Risk flag"),
         },
     )
 
+# ── Tab 3: Multi-Motion Revenue ───────────────────────────────────────────────
+
 with tab3:
-    st.write("Tab 3 coming soon.")
+    sel_sl = st.session_state.get("rev_service_lines", _ALL_SERVICE_LINES)
+    sel_motions = st.session_state.get("rev_motions", _ALL_MOTIONS_REV)
+    month_range = st.session_state.get("rev_month_range", (_ALL_MONTHS[0], _ALL_MONTHS[-1]))
+
+    rev = revenue_df[
+        (revenue_df["service_line"].isin(sel_sl)) &
+        (revenue_df["month"] >= month_range[0]) &
+        (revenue_df["month"] <= month_range[1])
+    ].copy()
+
+    # ── Monthly recurring revenue by motion ───────────────────────────────────
+    st.subheader("Monthly contract value by motion")
+
+    mrr_line = (
+        rev[rev["motion"].isin(sel_motions)]
+        .groupby(["month", "motion"])["MRR"]
+        .sum()
+        .reset_index()
+    )
+
+    fig_mrr = px.line(
+        mrr_line,
+        x="month",
+        y="MRR",
+        color="motion",
+        markers=True,
+        labels={
+            "month": "Month",
+            "MRR": "Monthly recurring revenue ($)",
+            "motion": "Motion",
+        },
+        color_discrete_map=_MOTION_COLORS,
+    )
+    fig_mrr.update_layout(legend_title_text="Motion")
+    st.plotly_chart(fig_mrr, use_container_width=True)
+
+    # ── Net dollar retention waterfall ────────────────────────────────────────
+    st.markdown("---")
+    st.subheader("Net dollar retention waterfall (trailing 3 months)")
+
+    _latest_3 = sorted(revenue_df["month"].unique())[-3:]
+    _wf = revenue_df[revenue_df["month"].isin(_latest_3)]
+
+    _renewal = _wf[_wf["motion"] == "Renewal"]["MRR"].sum()
+    _expansion = _wf[_wf["motion"] == "Expansion"]["MRR"].sum()
+    _churn = _wf[_wf["motion"] == "Churn"]["MRR"].sum()   # already negative
+    _ending = _renewal + _expansion + _churn
+    _ndr = _ending / _renewal if _renewal else 0
+
+    fig_waterfall = go.Figure(go.Waterfall(
+        orientation="v",
+        measure=["absolute", "relative", "relative", "total"],
+        x=["Beginning renewal", "Expansion", "Contraction and churn", "Ending"],
+        y=[_renewal, _expansion, _churn, 0],
+        text=[
+            f"${_renewal:,.0f}",
+            f"+${_expansion:,.0f}",
+            f"-${abs(_churn):,.0f}",
+            f"${_ending:,.0f}",
+        ],
+        textposition="outside",
+        connector={"line": {"color": "#94A3B8"}},
+        increasing={"marker": {"color": "#16A34A"}},
+        decreasing={"marker": {"color": "#DC2626"}},
+        totals={"marker": {"color": "#2563EB"}},
+    ))
+    fig_waterfall.update_layout(
+        showlegend=False,
+        yaxis_title="Monthly recurring revenue ($)",
+        title=f"Net dollar retention: {_ndr:.1%}",
+    )
+    st.plotly_chart(fig_waterfall, use_container_width=True)
+
+    # ── Interpreting hours utilization ────────────────────────────────────────
+    st.markdown("---")
+    st.subheader("Interpreting hours utilization by service line")
+
+    util_agg = (
+        rev.groupby("service_line")[["utilized_hours", "contracted_hours"]]
+        .sum()
+        .reset_index()
+    )
+    util_melted = util_agg.melt(
+        id_vars="service_line",
+        value_vars=["utilized_hours", "contracted_hours"],
+        var_name="type",
+        value_name="hours",
+    )
+    util_melted["type"] = util_melted["type"].map({
+        "utilized_hours": "Actual hours",
+        "contracted_hours": "Contracted hours",
+    })
+
+    fig_util = px.bar(
+        util_melted,
+        x="service_line",
+        y="hours",
+        color="type",
+        barmode="group",
+        labels={"service_line": "Service line", "hours": "Hours", "type": ""},
+        color_discrete_map={
+            "Actual hours": "#2563EB",
+            "Contracted hours": "#94A3B8",
+        },
+    )
+    fig_util.update_layout(legend_title_text="")
+    st.plotly_chart(fig_util, use_container_width=True)
+
+    # ── Service level agreement compliance ────────────────────────────────────
+    st.markdown("---")
+    st.subheader("Service level agreement compliance by service line")
+
+    sla_agg = (
+        rev.groupby("service_line")["sla_met"]
+        .mean()
+        .reset_index()
+        .rename(columns={"sla_met": "compliance_rate"})
+    )
+
+    fig_sla = px.bar(
+        sla_agg,
+        x="service_line",
+        y="compliance_rate",
+        labels={"service_line": "Service line", "compliance_rate": "Compliance rate"},
+        color_discrete_sequence=["#2563EB"],
+    )
+    fig_sla.update_yaxes(tickformat=".0%", range=[0, 1.1])
+    fig_sla.add_hline(
+        y=0.95,
+        line_dash="dash",
+        line_color="#DC2626",
+        annotation_text="95% target",
+        annotation_position="top right",
+    )
+    st.plotly_chart(fig_sla, use_container_width=True)
+
+# ── Tab 4: Rep Productivity and Compensation ──────────────────────────────────
 
 with tab4:
-    st.write("Tab 4 coming soon.")
+    sel_territories = st.session_state.get("rep_territories", _ALL_TERRITORIES)
+    reps_t4 = reps_df[reps_df["territory"].isin(sel_territories)].copy()
 
-with tab5:
-    pass
+    # ── Quota vs attainment scatter ───────────────────────────────────────────
+    st.subheader("Quota and attainment by rep")
+
+    fig_scatter = px.scatter(
+        reps_t4,
+        x="quota",
+        y="attainment_pct",
+        color="territory",
+        size="pipeline",
+        hover_name="rep_name",
+        hover_data={
+            "win_rate": ":.1%",
+            "avg_deal_size": ":$,.0f",
+            "quota": ":$,.0f",
+            "attainment_pct": ":.1%",
+            "pipeline": ":$,.0f",
+            "territory": False,
+        },
+        text="rep_name",
+        labels={
+            "quota": "Quota ($)",
+            "attainment_pct": "Attainment",
+            "territory": "Territory",
+            "pipeline": "Pipeline ($)",
+        },
+    )
+    fig_scatter.add_hline(
+        y=1.0,
+        line_dash="dash",
+        line_color="#DC2626",
+        annotation_text="100% quota",
+        annotation_position="top right",
+    )
+    fig_scatter.add_hline(
+        y=0.8,
+        line_dash="dot",
+        line_color="#D97706",
+        annotation_text="80% floor",
+        annotation_position="top right",
+    )
+    fig_scatter.update_traces(textposition="top center")
+    fig_scatter.update_yaxes(tickformat=".0%")
+    fig_scatter.update_xaxes(tickprefix="$", tickformat=",.0f")
+    fig_scatter.update_layout(legend_title_text="Territory")
+    st.plotly_chart(fig_scatter, use_container_width=True)
+
+    # ── Attainment tier breakdown ─────────────────────────────────────────────
+    st.markdown("---")
+    st.subheader("Attainment tier breakdown")
+
+    _TIER_ORDER = ["Below 50%", "50% to 79%", "80% to 99%", "100% and above"]
+    _TIER_COLORS = {
+        "Below 50%": "#DC2626",
+        "50% to 79%": "#D97706",
+        "80% to 99%": "#2563EB",
+        "100% and above": "#16A34A",
+    }
+
+    def _tier(pct: float) -> str:
+        if pct < 0.5:
+            return "Below 50%"
+        if pct < 0.8:
+            return "50% to 79%"
+        if pct < 1.0:
+            return "80% to 99%"
+        return "100% and above"
+
+    tier_df = reps_t4.copy()
+    tier_df["tier"] = tier_df["attainment_pct"].apply(_tier)
+    tier_counts = tier_df.groupby("tier").size().reset_index(name="reps")
+    tier_counts["tier"] = pd.Categorical(
+        tier_counts["tier"], categories=_TIER_ORDER, ordered=True
+    )
+    tier_counts = tier_counts.sort_values("tier")
+
+    fig_tiers = px.bar(
+        tier_counts,
+        x="tier",
+        y="reps",
+        color="tier",
+        color_discrete_map=_TIER_COLORS,
+        labels={"tier": "Attainment tier", "reps": "Number of reps"},
+    )
+    fig_tiers.update_layout(showlegend=False)
+    fig_tiers.update_yaxes(dtick=1)
+    st.plotly_chart(fig_tiers, use_container_width=True)
+
+    # ── Days-in-stage heatmap per rep ─────────────────────────────────────────
+    st.markdown("---")
+    st.subheader("Average days in stage per rep")
+
+    open_t4 = pipeline_df[
+        (~pipeline_df["stage"].isin(["Closed Won", "Closed Lost"])) &
+        (pipeline_df["rep_name"].isin(reps_t4["rep_name"]))
+    ]
+
+    heatmap_pivot = (
+        open_t4[open_t4["stage"].isin(_STAGE_ORDER)]
+        .groupby(["rep_name", "stage"])["days_in_stage"]
+        .mean()
+        .round(1)
+        .reset_index()
+        .pivot(index="rep_name", columns="stage", values="days_in_stage")
+        .reindex(columns=_STAGE_ORDER)
+        .fillna(0)
+    )
+
+    fig_heatmap = px.imshow(
+        heatmap_pivot,
+        color_continuous_scale="Blues",
+        labels={"x": "Stage", "y": "Rep", "color": "Avg days"},
+        aspect="auto",
+        text_auto=".1f",
+    )
+    fig_heatmap.update_layout(
+        xaxis_title="Stage",
+        yaxis_title="",
+        coloraxis_colorbar_title="Avg days",
+    )
+    st.plotly_chart(fig_heatmap, use_container_width=True)
+
+    # ── Variable compensation summary ─────────────────────────────────────────
+    st.markdown("---")
+    st.subheader("Variable compensation summary")
+
+    comp_table = reps_t4[
+        ["rep_name", "territory", "quota", "attainment_pct",
+         "base", "variable_target", "calculated_bonus"]
+    ].copy().sort_values("attainment_pct", ascending=False)
+
+    comp_table["attainment_display"] = (comp_table["attainment_pct"] * 100).round(1)
+
+    st.dataframe(
+        comp_table.drop(columns=["attainment_pct"]),
+        hide_index=True,
+        use_container_width=True,
+        column_config={
+            "rep_name": "Rep",
+            "territory": "Territory",
+            "quota": st.column_config.NumberColumn("Quota", format="$%.0f"),
+            "attainment_display": st.column_config.NumberColumn("Attainment", format="%.1f%%"),
+            "base": st.column_config.NumberColumn("Base salary", format="$%.0f"),
+            "variable_target": st.column_config.NumberColumn("Variable target", format="$%.0f"),
+            "calculated_bonus": st.column_config.NumberColumn("Calculated bonus", format="$%.0f"),
+        },
+    )
 
 # ── Sidebar ───────────────────────────────────────────────────────────────────
 
@@ -375,9 +656,31 @@ with st.sidebar:
             "or discount above 20%."
         )
     elif tab3.open:
-        st.caption("Revenue filters — coming soon.")
+        st.multiselect(
+            "Service line",
+            _ALL_SERVICE_LINES,
+            default=_ALL_SERVICE_LINES,
+            key="rev_service_lines",
+        )
+        st.multiselect(
+            "Motion",
+            _ALL_MOTIONS_REV,
+            default=_ALL_MOTIONS_REV,
+            key="rev_motions",
+        )
+        st.select_slider(
+            "Date range",
+            options=_ALL_MONTHS,
+            value=st.session_state["rev_month_range"],
+            key="rev_month_range",
+        )
     elif tab4.open:
-        st.caption("Rep filters — coming soon.")
+        st.multiselect(
+            "Territory",
+            _ALL_TERRITORIES,
+            default=_ALL_TERRITORIES,
+            key="rep_territories",
+        )
     else:
         st.caption("Select a tab to see filters.")
 
