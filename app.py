@@ -897,19 +897,26 @@ with tab3:
     )
     # Sort worst → best so underperformers are immediately visible on the left
     sla_agg = sla_agg.sort_values("compliance_rate").reset_index(drop=True)
-    # Conditional status for coloring — red below target, green at/above
-    sla_agg["status"] = sla_agg["compliance_rate"].apply(
-        lambda x: "At or above target (≥95%)" if x >= 0.95 else "Below target (<95%)"
-    )
+    # Three-tier alert coloring — critical / warning / on-target
+    def _sla_tier(x):
+        if x >= 0.95:  return "On target (≥95%)"
+        if x >= 0.90:  return "Warning (90–95%)"
+        return "Critical (<90%)"
+
+    sla_agg["status"] = sla_agg["compliance_rate"].apply(_sla_tier)
+    # Fix legend order: worst → best
+    _tier_order = ["Critical (<90%)", "Warning (90–95%)", "On target (≥95%)"]
     fig_sla = px.bar(
         sla_agg,
         x="service_line",
         y="compliance_rate",
         color="status",
         color_discrete_map={
-            "At or above target (≥95%)": "#16A34A",
-            "Below target (<95%)"      : "#DC2626",
+            "Critical (<90%)"   : "#DC2626",
+            "Warning (90–95%)"  : "#D97706",
+            "On target (≥95%)"  : "#16A34A",
         },
+        category_orders={"status": _tier_order},
         text=sla_agg["compliance_rate"].apply(lambda x: f"{x:.1%}"),
         labels={"service_line": "Service line", "compliance_rate": "Compliance rate", "status": ""},
     )
