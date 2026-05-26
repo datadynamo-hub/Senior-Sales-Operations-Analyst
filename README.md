@@ -1,6 +1,6 @@
 # Sorenson RevOps Center
 
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://senior-sales-operations-analyst.streamlit.app/)
+[![View Live Dashboard](https://img.shields.io/badge/View%20Live%20Dashboard-%23FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://senior-sales-operations-analyst.streamlit.app/)
 
 A production-deployed revenue operations intelligence dashboard built to demonstrate Senior Sales Operations readiness at Sorenson Communications.
 
