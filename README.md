@@ -1,58 +1,87 @@
-# 📊 AI-Powered Sales Dashboard
+# Sorenson RevOps Center
 
-An interactive and intelligent **Sales Dashboard** built with **Streamlit**, powered by a custom AI agent, and designed for KPI reporting and data-driven decision-making.
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://senior-sales-operations-analyst.streamlit.app/)
 
-This project helps sales teams and analysts visualize trends, revenue, and returns efficiently, with smart filters and a built-in assistant to answer business queries.
-
----
-## 🎥 Demo Video (click to watch ⬇)  
-[![Watch the video](https://github.com/user-attachments/assets/edc9e9e5-a134-4197-b4e4-7da46e6f49fa)](https://www.linkedin.com/posts/einstein-ebereonwu_ai-sme-smb-activity-7284494389354102784-67f2/?utm_source=share&utm_medium=member_desktop)
-
-
-## 🚀 Features
-
-- 🎯 **KPI Highlights**: No. of Sales, Returns, Revenue, and Loss.
-- 📈 **Visual Insights**: Line chart, Stacked Bar Graph, and Treemap to explore monthly and category-wise sales.
-- 🤖 **AI Assistant Manager**: Ask questions about your data using a conversational interface (RAG-based agent).
-- 🔎 **Interactive Filters**: Filter by year and product category for dynamic updates across all visualizations.
-- 💡 **ETL Optimization**: Backend pipeline engineered with **Azure Data Factory** for high-volume data handling (1M+ rows).
-
-## 🧠 Tech Stack
-
-- MongoDB (via `pymongo`)  
-- Python: Streamlit, Plotly, Pandas
-- LangChain: RAG-based AI Agent  
-
+A production-deployed revenue operations intelligence dashboard built to demonstrate Senior Sales Operations readiness at Sorenson Communications.
 
 ---
 
-## ⚙️ Getting Started
+## From Scaffold to Production
 
-### 1. Clone the repository
+This repo is a fork of [@munas-git's AI-Powered Sales KPI Dashboard](https://github.com/munas-git/AI-powered-sales-dashboard). The original served as the wireframe. This is the build.
+
+The following were stripped out by design:
+
+- **MongoDB and pyodbc** — replaced with a lightweight CSV-native data layer. Three flat files (pipeline.csv, revenue.csv, reps.csv) remove all infrastructure dependency and make the app fully portable on Streamlit Community Cloud.
+- **LangChain, RAG agent, and OpenAI chatbot** — removed entirely. A live API dependency introduces failure risk in a demo context; the analytical depth of the dashboard carries the demonstration without it.
+- **Generic sales data** — replaced with synthetic data modeled on Sorenson Communications' five service lines, SLA structure, and three-motion revenue operation (New, Expand, Renew) — the analytical patterns of any enterprise interpreting services business, built with Sorenson's specific context by name.
+
+Forking, stripping, and rebuilding a scaffold is a deliberate product judgment call. Every removal was a decision about what actually serves the purpose.
+
+---
+
+## Four-Tab Architecture
+
+| Tab | Title | Core Business Question |
+|-----|-------|------------------------|
+| 1 | Executive Summary | How is the business performing right now at a glance? |
+| 2 | Pipeline & Forecast | Which deals are at risk and what will we close this quarter? |
+| 3 | Multi-Motion Revenue | How are our service lines and sales motions trending? |
+| 4 | Rep Productivity & Compensation | Who is performing, who needs coaching, and are reps paid fairly? |
+
+---
+
+## Key Features
+
+- **Risk-adjusted forecasting** — composite deal risk scoring (stage overage, risk flags, deal size) feeding three forecast scenarios: conservative, base, and upside. Built to replace gut-feel pipeline calls with a reproducible, stage-weighted model.
+- **Pipeline hygiene tracking** — at-risk deal table with four boolean hygiene fields (past stage benchmark, high discount, low engagement, manual risk flag) modeled after the fields a Dynamics 365 CRM admin would track.
+- **Consumption velocity cohort matrix** — utilization heatmap showing how much of their contracted interpreting hours each customer cohort consumes by month of tenure. Red cells at month 3 signal churn risk before month 12 renewal.
+- **Compensation plan simulator** — four-tier commission logic (floor, ramp, at-quota, accelerator) with real-time payout calculation at any attainment level, including the floor cliff edge case that generates the most rep disputes.
+
+---
+
+## Data
+
+Three synthetic CSV files in the `/data` folder. Fixed random seed (42) ensures reproducibility across every run.
+
+| File | Rows | Contents |
+|------|------|----------|
+| pipeline.csv | 135 deals | deal_id, rep, territory, motion, stage, ARR, days_in_stage, risk flags |
+| revenue.csv | 480 rows | 8 service lines × 60 months, MRR, contracted hours, utilized hours, SLA met |
+| reps.csv | 12 reps | quota, attainment, win rate, avg deal size, days to close, bonus, TAM |
+
+The data is simulated. The logic — formulas, risk scoring, compensation tiers, cohort structure — is production-ready.
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| App framework | Python 3.12 + Streamlit |
+| Visualization | Plotly Express + Graph Objects |
+| Data processing | pandas + NumPy |
+| Deployment | Streamlit Community Cloud |
+| Version control | GitHub (auto-deploys from main) |
+| Data | CSV (3 files, no database) |
+
+---
+
+## Getting Started
+
 ```bash
-git clone https://github.com/munas-git/AI-powered-sales-dashboard.git
-cd sales-dashboard-ai
+git clone https://github.com/datadynamo-hub/Senior-Sales-Operations-Analyst.git
+cd Senior-Sales-Operations-Analyst
 ```
 
-### 2. Install dependencies
-```
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+```bash
 pip install -r requirements.txt
 ```
 
-### 4. Run the application
-```
+```bash
 streamlit run app.py
 ```
 
-## 💬 AI Assistant Capabilities
+---
 
-The built-in assistant can answer business queries like:
-
-- "What's the highest-selling category in 2024?"
-- "Show total return losses for the last two years."
-- "Which month had peak revenue?"
-- "How many returns were recorded in Q1?"
-- "What was the average revenue per category in 2023?"
-- "Compare sales vs returns for Capsicum."
+Built by Jonathan Khan for Sorenson Communications interview preparation.
