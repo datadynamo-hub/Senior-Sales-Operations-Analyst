@@ -819,6 +819,39 @@ with tab3:
     )
     fig_exp_vel.update_layout(coloraxis_showscale=False, showlegend=False)
     fig_exp_vel.add_hline(y=0, line_color="#0F172A", line_width=0.75)
+    # Clamp y-axis so the baseline spike in the first month doesn't compress all
+    # subsequent bars into a flat line.  The outlier is annotated explicitly.
+    _Y_CAP = 30
+    fig_exp_vel.update_yaxes(range=[-_Y_CAP, _Y_CAP])
+    _first_val = exp_vel["mom_growth_pct"].iloc[0]
+    _first_mo  = exp_vel["month"].iloc[0]
+    if abs(_first_val) > _Y_CAP:
+        fig_exp_vel.add_annotation(
+            x=_first_mo,
+            y=_Y_CAP,
+            text=f"{_first_mo}: {_first_val:+.0f}% (axis clamped — baseline period)",
+            showarrow=True,
+            arrowhead=2,
+            arrowcolor="#64748B",
+            arrowwidth=1.5,
+            font=dict(size=11, color="#64748B"),
+            bgcolor="#F1F5F9",
+            bordercolor="#94A3B8",
+            borderwidth=1,
+            borderpad=4,
+            ay=-44,
+        )
+    # Rolling 3-month average trend line overlay
+    exp_vel["rolling_avg"] = exp_vel["mom_growth_pct"].rolling(3, min_periods=1).mean()
+    fig_exp_vel.add_scatter(
+        x=exp_vel["month"],
+        y=exp_vel["rolling_avg"].clip(-_Y_CAP, _Y_CAP),
+        mode="lines",
+        line=dict(color="#1E3A5F", width=2, dash="dot"),
+        name="3-mo rolling avg",
+        hovertemplate="%{x}: %{y:.1f}%<extra>3-mo avg</extra>",
+    )
+    fig_exp_vel.update_layout(showlegend=True, legend=dict(orientation="h", y=1.08))
     st.plotly_chart(fig_exp_vel, use_container_width=True)
 
     # ── Interpreting hours utilization ────────────────────────────────────────
@@ -862,21 +895,37 @@ with tab3:
         .reset_index()
         .rename(columns={"sla_met": "compliance_rate"})
     )
+    # Sort worst → best so underperformers are immediately visible on the left
+    sla_agg = sla_agg.sort_values("compliance_rate").reset_index(drop=True)
+    # Conditional status for coloring — red below target, green at/above
+    sla_agg["status"] = sla_agg["compliance_rate"].apply(
+        lambda x: "At or above target (≥95%)" if x >= 0.95 else "Below target (<95%)"
+    )
     fig_sla = px.bar(
         sla_agg,
         x="service_line",
         y="compliance_rate",
-        labels={"service_line": "Service line", "compliance_rate": "Compliance rate"},
-        color_discrete_sequence=["#2563EB"],
+        color="status",
+        color_discrete_map={
+            "At or above target (≥95%)": "#16A34A",
+            "Below target (<95%)"      : "#DC2626",
+        },
+        text=sla_agg["compliance_rate"].apply(lambda x: f"{x:.1%}"),
+        labels={"service_line": "Service line", "compliance_rate": "Compliance rate", "status": ""},
     )
-    fig_sla.update_yaxes(tickformat=".0%", range=[0, 1.1])
+    fig_sla.update_traces(textposition="outside")
+    # Zoom y-axis into the performance band — reveals variance hidden by 0-100% scale
+    _sla_floor = max(0.0, sla_agg["compliance_rate"].min() - 0.04)
+    fig_sla.update_yaxes(tickformat=".0%", range=[_sla_floor, 1.01])
     fig_sla.add_hline(
         y=0.95,
         line_dash="dash",
-        line_color="#DC2626",
+        line_color="#0F172A",
+        line_width=1.5,
         annotation_text="95% target",
         annotation_position="top right",
     )
+    fig_sla.update_layout(legend=dict(orientation="h", y=1.08), legend_title_text="")
     st.plotly_chart(fig_sla, use_container_width=True)
 
     # ── Consumption cohort heatmap ────────────────────────────────────────────
