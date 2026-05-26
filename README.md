@@ -84,4 +84,4 @@ streamlit run app.py
 
 ---
 
-Built by Jonathan Khan for Sorenson Communications interview preparation.
+Built by [Jonathan Khan](https://www.linkedin.com/in/jonathan-k-184393120/) for Sorenson Communications interview preparation.

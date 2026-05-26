@@ -159,7 +159,7 @@ for _k, _v in _DEFAULTS.items():
 st.title("Sorenson RevOps Center")
 st.markdown("Pipeline, forecast, and revenue tracking built around how Sorenson actually sells.")
 st.caption(
-    "Built by [Jon Khan](https://www.linkedin.com/in/jonathan-k-184393120/) "
+    "Built by [Jon Khan](https://github.com/datadynamo-hub/Senior-Sales-Operations-Analyst) "
     "· [LinkedIn](https://www.linkedin.com/in/jonathan-k-184393120/) "
     "· Forked from [munas-git](https://github.com/munas-git/AI-powered-sales-dashboard)"
 )
